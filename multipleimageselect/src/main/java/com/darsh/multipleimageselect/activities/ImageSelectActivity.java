@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,13 +58,17 @@ public class ImageSelectActivity extends HelperActivity {
     private Thread thread;
 
     private final String[] projection = new String[]{ MediaStore.Images.Media._ID, MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA };
+    TextView textViewSelected,textViewAdd;
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_select);
         setView(findViewById(R.id.layout_image_select));
-
+        textViewSelected = findViewById(R.id.textViewSelected);
+        textViewAdd = findViewById(R.id.textViewAdd);
+        back = findViewById(R.id.back);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -90,15 +95,27 @@ public class ImageSelectActivity extends HelperActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (actionMode == null) {
-                    actionMode = ImageSelectActivity.this.startActionMode(callback);
-                }
+
                 toggleSelection(position);
-                actionMode.setTitle(countSelected + " " + getString(R.string.selected));
+                textViewSelected.setText(countSelected + " " + getString(R.string.selected));
 
                 if (countSelected == 0) {
-                    actionMode.finish();
+                    textViewAdd.setVisibility(View.GONE);
+                }else{
+                    textViewAdd.setVisibility(View.VISIBLE);
                 }
+            }
+        });
+        textViewAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendIntent();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              finish();
             }
         });
     }

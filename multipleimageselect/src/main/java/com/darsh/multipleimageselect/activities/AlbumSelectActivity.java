@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -53,6 +54,7 @@ public class AlbumSelectActivity extends HelperActivity {
             MediaStore.Images.Media.BUCKET_ID,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
             MediaStore.Images.Media.DATA };
+    ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +66,14 @@ public class AlbumSelectActivity extends HelperActivity {
         setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(R.string.album_view);
-        }
-
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         Intent intent = getIntent();
         if (intent == null) {
             finish();
